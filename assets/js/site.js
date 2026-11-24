@@ -302,10 +302,11 @@
   /* Town ticker: steady drift that speeds up and reverses with scroll */
   var track = document.querySelector(".ticker-track");
   if (track) {
-    var loop = gsap.to(track, { xPercent: -50, duration: 40, ease: "none", repeat: -1 });
+    var loop = gsap.to(track, { xPercent: -50, duration: 40, ease: "none", repeat: -1, paused: true });
     var dir = 1;
     ScrollTrigger.create({
       trigger: ".ticker", start: "top bottom", end: "bottom top",
+      onToggle: function (self) { if (self.isActive) loop.play(); else loop.pause(); },
       onUpdate: function (self) {
         dir = self.direction;
         var v = Math.min(Math.abs(self.getVelocity()) / 300, 6);
