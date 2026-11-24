@@ -4,19 +4,61 @@
   var root = document.documentElement;
   var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Review-only palette switcher */
-  var switches = document.querySelectorAll("[data-set-theme]");
-  function markTheme() {
-    switches.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.setTheme === root.dataset.theme)); });
+  /* Theme: follows the phone or computer setting until the visitor picks one */
+  var toggle = document.querySelector("[data-theme-toggle]");
+  var sysDark = window.matchMedia("(prefers-color-scheme: dark)");
+  function labelToggle() {
+    if (toggle) toggle.setAttribute("aria-label", root.dataset.theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
   }
-  switches.forEach(function (b) {
-    b.addEventListener("click", function () {
-      root.dataset.theme = b.dataset.setTheme;
-      try { localStorage.setItem("hrm-theme", b.dataset.setTheme); } catch (e) {}
-      markTheme();
-    });
+  function setTheme(t) { root.dataset.theme = t; labelToggle(); }
+  labelToggle();
+  sysDark.addEventListener("change", function (ev) {
+    var saved = null; try { saved = localStorage.getItem("hrm-theme"); } catch (e) {}
+    if (!saved) setTheme(ev.matches ? "dark" : "light");
   });
-  markTheme();
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      var next = root.dataset.theme === "dark" ? "light" : "dark";
+      try { localStorage.setItem("hrm-theme", next); } catch (e) {}
+      if (!document.startViewTransition || calm) { setTheme(next); return; }
+      var r = toggle.getBoundingClientRect();
+      var x = r.left + r.width / 2, y = r.top + r.height / 2;
+      var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      document.startViewTransition(function () { setTheme(next); }).ready.then(function () {
+        root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+          { duration: 750, easing: "cubic-bezier(0.65, 0, 0.35, 1)", pseudoElement: "::view-transition-new(root)" });
+      });
+    });
+  }
+
+  /* Viewer-only note for the preview. Remove before launch. */
+  var note = document.querySelector("[data-vnote]");
+  var noteTab = document.querySelector("[data-vnote-open]");
+  var lastFocus = null;
+  function openNote() {
+    if (!note) return;
+    lastFocus = document.activeElement;
+    note.hidden = false; noteTab.hidden = true;
+    note.querySelector(".x").focus();
+    if (window.gsap && !calm) gsap.fromTo(note.querySelector(".vnote-card"), { y: 40, opacity: 0, rotate: -1.5 }, { y: 0, opacity: 1, rotate: 0, duration: 0.8, ease: "expo.out" });
+  }
+  function closeNote() {
+    note.hidden = true; noteTab.hidden = false;
+    try { localStorage.setItem("hrm-note", "1"); } catch (e) {}
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  if (note) {
+    note.querySelectorAll("[data-vnote-close]").forEach(function (b) { b.addEventListener("click", closeNote); });
+    note.addEventListener("click", function (ev) { if (ev.target === note) closeNote(); });
+    document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && !note.hidden) closeNote(); });
+    noteTab.addEventListener("click", openNote);
+  }
+  function maybeShowNote(delay) {
+    if (!note) return;
+    var seen = null; try { seen = localStorage.getItem("hrm-note"); } catch (e) {}
+    if (seen) { noteTab.hidden = false; return; }
+    setTimeout(openNote, delay);
+  }
 
   /* Live slab calculator: cubic yards = L(ft) x W(ft) x T(in)/12 / 27 */
   var calc = document.querySelector("[data-calc]");
@@ -53,7 +95,7 @@
   var townLis = townList ? townList.querySelectorAll("li") : [];
 
   /* Route lines from the nearest location to each town */
-  var routes = document.querySelector(".map .routes");
+  var routes = document.querySelector(".map .routes") || document.createElementNS("http://www.w3.org/2000/svg", "g");
   var yards = Array.prototype.map.call(document.querySelectorAll(".map .yard"), function (y) {
     return { x: +y.dataset.x, y: +y.dataset.y };
   });
@@ -79,33 +121,51 @@
   if (!window.gsap || calm) {
     finishIntro();
     townLis.forEach(function (li) { li.classList.add("on"); });
+    maybeShowNote(1200);
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: "power3.out" });
 
-  /* 1. Intro: the year closes up, a slit opens across the middle, then the photo opens to full frame */
+  /* 1. Intro: the logo alone, then it flies into the header while the page builds in */
   var lines$ = document.querySelectorAll(".hero-title .ln > span");
+  var navBits = document.querySelectorAll(".site-header .nav a, .site-header .hdr-tools > *");
+  var barBits = document.querySelectorAll(".hero-bar > *");
+  var brand = document.querySelector(".site-header .brand");
   if (root.classList.contains("intro")) {
-    var media = document.querySelector(".hero-media");
-    var img = media.querySelector("img");
-    var halves = document.querySelectorAll(".hero-year span");
-    var tl = gsap.timeline({ onComplete: finishIntro });
-    tl.fromTo(halves[0], { x: -60, opacity: 0 }, { x: -2, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.1)
-      .fromTo(halves[1], { x: 60, opacity: 0 }, { x: 2, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.1)
-      .to(media, { clipPath: "inset(49.6% 0% 49.6% 0%)", duration: 0.7, ease: "expo.inOut" }, 0.75)
-      .to(halves, { opacity: 0, duration: 0.3, ease: "power1.out" }, 1.25)
-      .to(media, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 1.35)
-      .to(img, { scale: 1, duration: 1.8, ease: "expo.out" }, 1.35)
-      .to(lines$, { y: 0, duration: 1.1, stagger: 0.09, ease: "expo.out" }, 1.85)
-      .to([".site-header", ".hero-bar"], { opacity: 1, duration: 0.8, ease: "power2.out" }, 2.05);
+    var screen = document.querySelector(".intro-screen");
+    var logo = screen.querySelector(".intro-logo");
+    var heroImg = document.querySelector(".hero-media img");
+    gsap.set(lines$, { yPercent: 135, opacity: 1 });
+    gsap.set([navBits, barBits, brand], { opacity: 0 });
+    gsap.set(logo, { transformOrigin: "0 0" });
+    var tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+    tl.from(logo.querySelector("svg"), { scale: 0.4, rotate: -60, opacity: 0, duration: 1.1, transformOrigin: "50% 50%" }, 0.15)
+      .from(logo.querySelectorAll(".brand-word b, .brand-word small"), { y: 30, opacity: 0, duration: 0.9, stagger: 0.08 }, 0.3)
+      .add(function () {
+        var s = logo.getBoundingClientRect(), t = brand.getBoundingClientRect();
+        var k = t.width / s.width;
+        gsap.to(logo, { x: t.left - s.left, y: t.top - s.top, scale: k, duration: 1.15, ease: "expo.inOut" });
+      }, 1.35)
+      .to(screen.querySelector(".intro-bg"), { clipPath: "inset(0% 0% 100% 0%)", duration: 1.15, ease: "expo.inOut" }, 1.45)
+      .to(heroImg, { scale: 1, duration: 2, ease: "expo.out" }, 1.5)
+      .add(function () {
+        gsap.set(brand, { opacity: 1 });
+        finishIntro();
+      }, 2.55)
+      .to(navBits, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, startAt: { y: -14 } }, 2.3)
+      .to(lines$, { yPercent: 0, duration: 1.1, stagger: 0.09 }, 2.05)
+      .to(barBits, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, startAt: { y: 18 } }, 2.45)
+      .add(function () { maybeShowNote(700); }, 3.2);
   } else {
     gsap.from(lines$, { yPercent: 135, duration: 1, stagger: 0.08, ease: "expo.out", delay: 0.1 });
+    gsap.from(barBits, { opacity: 0, y: 18, duration: 0.8, stagger: 0.06, delay: 0.35 });
+    maybeShowNote(1400);
   }
 
   /* Hero photo drifts slower than the page */
-  gsap.to(".hero-media img", {
+  if (document.querySelector(".hero-media")) gsap.to(".hero-media img", {
     yPercent: 8, ease: "none",
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
   });
@@ -118,7 +178,7 @@
       scrollTrigger: { trigger: split, start: "top 85%", once: true }
     });
   }
-  gsap.fromTo(".statement-subject img",
+  if (document.querySelector(".statement-subject")) gsap.fromTo(".statement-subject img",
     { rotate: -14, yPercent: 10, scale: 0.92 },
     { rotate: 6, yPercent: -8, scale: 1, ease: "none",
       scrollTrigger: { trigger: ".statement", start: "top bottom", end: "bottom top", scrub: 0.6 } });
@@ -135,7 +195,7 @@
 
   /* 4. Delivery area: pin, draw routes, count towns */
   var mm = gsap.matchMedia();
-  mm.add("(min-width: 1081px)", function () {
+  if (document.querySelector("[data-area]")) mm.add("(min-width: 1081px)", function () {
     var count = document.querySelector("[data-count]");
     var state = { n: 0 };
     gsap.set(lines, { strokeDasharray: 1, strokeDashoffset: 1 });
@@ -158,9 +218,25 @@
     });
     return function () { townLis.forEach(function (li) { li.classList.remove("on"); }); count.textContent = "18"; };
   });
-  mm.add("(max-width: 1080px)", function () {
+  if (document.querySelector("[data-area]")) mm.add("(max-width: 1080px)", function () {
     townLis.forEach(function (li) { li.classList.add("on"); });
   });
+
+  /* Town ticker: steady drift that speeds up and reverses with scroll */
+  var track = document.querySelector(".ticker-track");
+  if (track) {
+    var loop = gsap.to(track, { xPercent: -50, duration: 40, ease: "none", repeat: -1 });
+    var dir = 1;
+    ScrollTrigger.create({
+      trigger: ".ticker", start: "top bottom", end: "bottom top",
+      onUpdate: function (self) {
+        dir = self.direction;
+        var v = Math.min(Math.abs(self.getVelocity()) / 300, 6);
+        gsap.to(loop, { timeScale: dir * (1 + v), duration: 0.3, overwrite: true });
+        gsap.to(loop, { timeScale: dir, duration: 1.2, delay: 0.3, ease: "power2.out" });
+      }
+    });
+  }
 
   /* Section headings ease up as they arrive */
   gsap.utils.toArray(".h2").forEach(function (h) {

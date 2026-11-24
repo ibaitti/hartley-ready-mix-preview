@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Still curing | Hartley Ready Mix Concrete</title>
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+  (function () {
+    var d = document.documentElement;
+    try {
+      var saved = localStorage.getItem("hrm-theme");
+      d.dataset.theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    } catch (e) {}
+  })();
+</script>
+<style>
+  body.p404 .site-header { color: var(--ink); }
+  body.p404 .theme-toggle { background: color-mix(in oklch, var(--ink) 8%, transparent); }
+  .curing { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: hidden; padding-block: 140px 120px; }
+  .curing .wrap { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); align-items: center; }
+  .big404 { grid-column: 1 / span 6; display: flex; align-items: center; gap: 0.04em; font-size: clamp(7rem, 3rem + 16vw, 19rem); font-weight: 850; font-stretch: 66%; line-height: .8; letter-spacing: -0.03em; }
+  .big404 svg { width: 0.86em; height: auto; color: var(--accent); animation: mix 3.2s linear infinite; filter: drop-shadow(0 0 0 transparent); }
+  [data-theme="light"] .big404 svg { color: var(--ink); }
+  @keyframes mix { to { transform: rotate(360deg); } }
+  .curing-copy { grid-column: 8 / -1; display: grid; gap: 22px; }
+  .curing-copy h1 { font-size: var(--step-4); font-stretch: 72%; }
+  .curing-copy h1 em { font-style: normal; background: var(--accent); color: var(--on-accent); padding: 0 .1em; border-radius: .06em; }
+  .curing-copy p { font-size: var(--step-1); max-width: 34ch; }
+  .curing-copy .row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .curing-copy small { color: var(--soft); font-size: var(--step--1); }
+  .tape { position: absolute; left: -5%; right: -5%; bottom: 13%; z-index: 1; transform: rotate(-3.5deg); background: var(--accent); color: var(--on-accent); overflow: hidden; padding: 14px 0; box-shadow: 0 10px 30px oklch(0 0 0 / .12); }
+  .tape div { display: flex; width: max-content; animation: tape 26s linear infinite; }
+  .tape span { white-space: nowrap; font-weight: 850; font-stretch: 75%; font-size: clamp(1.1rem, .8rem + 1vw, 1.7rem); padding-right: 1em; }
+  @keyframes tape { to { transform: translateX(-50%); } }
+  .boots { position: absolute; inset: 0; z-index: 0; color: color-mix(in oklch, var(--ink) 14%, transparent); pointer-events: none; }
+  .boot { position: absolute; width: clamp(26px, 2.6vw, 40px); height: auto; opacity: 0; animation: step 9s var(--ease-out) infinite; animation-delay: calc(var(--i) * .55s); }
+  @keyframes step { 0% { opacity: 0; scale: 1.25; } 6% { opacity: 1; scale: 1; } 70% { opacity: 1; } 85%, 100% { opacity: 0; } }
+  @media (max-width: 1080px) { .big404, .curing-copy { grid-column: 1 / -1; } .tape { bottom: 6%; } }
+  @media (prefers-reduced-motion: reduce) { .big404 svg, .tape div { animation: none; } .boot { animation: none; opacity: 1; } }
+</style>
+</head>
+<body class="p404">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 787 723"><path fill="currentColor" fill-rule="evenodd" d="M 595.7 2.2 C 593.7 3.4,586.2 9.8,578.9 16.4 L 565.9 28.4 529.7 37.7 C 509.7 42.8,464.7 54.2,429.5 63.0 C 360.2 80.4,361.5 80.0,364.5 80.7 C 402.9 89.4,478.2 125.8,542 166.5 C 551.6 172.6,562.6 179.3,566.5 181.4 C 580.5 189.1,582.9 191.1,597.7 207.8 C 614.6 226.8,632.0 247.1,643.4 261 C 647.7 266.2,652.8 272.1,654.8 274.2 C 659.6 279.3,658.4 278.9,647.7 272.1 C 636.1 264.7,580.0 230.1,561.5 218.8 C 553.8 214.1,533.0 201.2,515.3 190.2 C 444.2 145.7,397.5 123.9,346.5 111.5 C 323.2 105.8,300.0 104.2,292.9 107.9 C 288.7 110.1,192.9 189.5,193.0 190.8 C 193.0 191.2,196.5 192.5,200.7 193.8 C 233.7 203.7,273.2 222.2,312.7 246.3 C 329.6 256.6,367.2 282.4,381 293.1 C 465.2 358.9,496.8 380.3,547.0 405.4 C 595.4 429.6,636.9 442.4,671.9 444.1 L 678.4 444.5 682.6 433.5 C 685.0 427.4,696.3 397.9,707.8 368 C 719.3 338.0,734.0 299.9,740.4 283.4 L 752.0 253.4 758.2 248.5 C 780.4 230.8,787.9 222.6,786.4 217.9 C 785.2 214.1,758.6 181.9,682.3 91.9 C 664.8 71.3,641.7 44.0,631.1 31.4 C 601.8 -3.1,603.0 -2.1,595.7 2.2 M 151.4 225.3 C 134.7 238.5,121.6 255.6,109.7 279.7 C 105.3 288.7,101.9 296.1,102.1 296.3 C 102.3 296.4,105.6 297.8,109.5 299.4 C 148.1 315.0,214.9 362.5,281.5 421.6 C 347.8 480.4,398.9 516.2,456.6 544.4 C 488.3 559.9,515.8 568.8,544.1 572.5 L 556.8 574.2 566.8 566.3 C 597.1 542.3,641.9 503.7,648.0 496.3 C 656.3 486.4,662 478.9,662 477.9 C 662 477.4,659.8 476.8,657.2 476.4 C 580.1 466.3,496.9 425.5,399 349.8 C 332.3 298.4,307.8 281.4,269 259.9 C 238.7 243.2,201.7 228.4,173 221.5 C 159.3 218.2,160.6 218.0,151.4 225.3 M 80.1 350.2 C 75.2 362.4,68.0 380.6,64.1 390.5 C 54.3 415.9,34.0 466.9,32.4 470.5 C 31.6 472.1,27.0 476.6,22.2 480.4 C 3.0 495.8,-0.0 499.6,0.0 508.2 C 0.0 515.1,-0.3 514.4,20.5 539.1 C 30.4 550.8,50.2 574.4,64.5 591.5 C 78.7 608.5,99.0 632.6,109.5 645 C 119.9 657.3,137.6 678.3,148.6 691.5 C 171.0 718.2,171.9 719.2,177.2 721.4 C 185.5 724.9,189.8 723.2,203.5 711.4 C 209 706.7,215.3 701.2,217.7 699.3 L 221.9 695.8 265.7 688.4 C 393.8 666.9,418.3 662.7,427.4 660.8 C 445.5 657.1,461.8 650.4,476.6 640.8 C 484.5 635.7,522.8 605.1,522.9 603.8 C 522.9 603.5,517.7 602.0,511.2 600.5 C 465.1 589.7,404.8 559.3,344 516.1 C 323.7 501.8,281.1 466.9,245.5 435.6 C 207.5 402.3,168.0 372.1,138.5 353.8 C 125.4 345.7,92.0 328,89.9 328 C 89.5 328,85.1 338.0,80.1 350.2"/></symbol>
+  <symbol id="arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></symbol>
+  <symbol id="phone" viewBox="0 0 20 20"><path d="M6.6 2.5 8.4 6.6 6.7 8a10 10 0 0 0 5.3 5.3l1.4-1.7 4.1 1.8-.6 3.5a1.6 1.6 0 0 1-1.6 1.3A14.7 14.7 0 0 1 1.8 4.7 1.6 1.6 0 0 1 3.1 3z" fill="currentColor"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Hartley Ready Mix Concrete, home">
+      <svg viewBox="0 0 787 723" aria-hidden="true"><use href="#mark"/></svg>
+      <span class="brand-word"><b>HARTLEY</b><small>READY MIX CONCRETE</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/mixes-delivery.html"><span class="swap"><span>Mixes &amp; Delivery</span><span aria-hidden="true">Mixes &amp; Delivery</span></span></a>
+      <a href="/calculator.html"><span class="swap"><span>Calculator</span><span aria-hidden="true">Calculator</span></span></a>
+      <a href="/quote-credit.html"><span class="swap"><span>Quote &amp; Credit</span><span aria-hidden="true">Quote &amp; Credit</span></span></a>
+      <a href="/careers-contact.html"><span class="swap"><span>Careers &amp; Contact</span><span aria-hidden="true">Careers &amp; Contact</span></span></a>
+    </nav>
+    <div class="hdr-tools">
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+        <svg class="i-moon" aria-hidden="true"><use href="#moon"/></svg>
+        <svg class="i-sun" aria-hidden="true"><use href="#sun"/></svg>
+      </button>
+      <a class="btn btn-accent hdr-call" href="tel:+13367883928">
+        <svg aria-hidden="true"><use href="#phone"/></svg>
+        <span>336-788-3928 <small>Winston-Salem</small></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="curing textured">
+  <div class="boots" aria-hidden="true"><svg class="boot" style="--i:0;left:8%;top:70%;transform:rotate(6deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:1;left:19%;top:58%;transform:rotate(-8deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:2;left:30%;top:70%;transform:rotate(6deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:3;left:41%;top:58%;transform:rotate(-8deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:4;left:52%;top:70%;transform:rotate(6deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:5;left:63%;top:58%;transform:rotate(-8deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:6;left:74%;top:70%;transform:rotate(6deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg><svg class="boot" style="--i:7;left:85%;top:58%;transform:rotate(-8deg)" viewBox="0 0 40 90" aria-hidden="true"><path d="M20 2c10 0 16 9 16 22 0 10-4 18-6 26H10C8 42 4 34 4 24 4 11 10 2 20 2zM9 58h22c2 8 1 18-3 24-2 4-6 6-8 6s-6-2-8-6c-4-6-5-16-3-24z" fill="currentColor"/></svg></div>
+  <div class="wrap">
+    <p class="big404" aria-label="404"><span aria-hidden="true">4</span><svg viewBox="0 0 787 723" aria-hidden="true"><use href="#mark"/></svg><span aria-hidden="true">4</span></p>
+    <div class="curing-copy">
+      <h1>This page is still <em>curing</em></h1>
+      <p>We poured it, but it has not set yet. The rest of the new Hartley site is on the way, and good concrete does not like to be rushed.</p>
+      <div class="row">
+        <a class="btn btn-ink" href="/"><span class="swap"><span>Back to the home page</span><span aria-hidden="true">Back to the home page</span></span><svg aria-hidden="true"><use href="#arrow"/></svg></a>
+        <a class="btn btn-accent" href="tel:+13367883928"><svg aria-hidden="true"><use href="#phone"/></svg>Call 336-788-3928</a>
+      </div>
+      <small>Someone walked across it anyway. You can see the boot prints.</small>
+    </div>
+  </div>
+  <div class="tape" aria-hidden="true"><div><span>WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF.</span><span>WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF.</span></div></div>
+</main>
+
+<nav class="callbar" aria-label="Call us">
+  <a href="tel:+13367883928">Call Winston-Salem<small>336-788-3928</small></a>
+  <a href="tel:+13362945995">Call Greensboro<small>336-294-5995</small></a>
+</nav>
+
+<script src="/assets/js/vendor/gsap.min.js" defer></script>
+<script src="/assets/js/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
