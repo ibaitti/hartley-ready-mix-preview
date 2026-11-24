@@ -81,6 +81,76 @@
     update();
   }
 
+  /* Full calculator: three shapes, mixed units, result in cubic yards */
+  var full = document.querySelector("[data-fullcalc]");
+  if (full) {
+    var toYd = { ft: 1 / 3, in: 1 / 36, yd: 1, m: 1 / 0.9144, cm: 1 / 91.44 };
+    var tabs = full.querySelectorAll('[role="tab"]');
+    var panels = full.querySelectorAll('[role="tabpanel"]');
+    var totalOut = full.querySelector("[data-total]");
+    var qLink = full.querySelector("[data-quote-link]");
+    var current = 0;
+    var dims = function (panel) {
+      return Array.prototype.map.call(panel.querySelectorAll(".dim"), function (d) {
+        var v = Math.max(0, parseFloat(d.querySelector("[data-v]").value) || 0);
+        return v * toYd[d.querySelector("[data-u]").value];
+      });
+    };
+    var compute = function () {
+      var panel = panels[0];
+      panels.forEach(function (p) { if (!p.hidden) panel = p; });
+      var d = dims(panel), q = Math.max(0, parseFloat(panel.querySelector("[data-q]").value) || 0), v = 0;
+      if (panel.dataset.shape === "slab") v = d[0] * d[1] * d[2];
+      if (panel.dataset.shape === "round") v = Math.PI * Math.pow(d[0] / 2, 2) * d[1];
+      if (panel.dataset.shape === "tube") v = Math.max(0, Math.PI * (Math.pow(d[0] / 2, 2) - Math.pow(d[1] / 2, 2)) * d[2]);
+      var yards = v * q;
+      if (window.gsap && !calm) {
+        var o = { n: current };
+        gsap.to(o, { n: yards, duration: 0.5, ease: "power3.out", overwrite: true, onUpdate: function () { totalOut.textContent = o.n.toFixed(2); } });
+      } else totalOut.textContent = yards.toFixed(2);
+      current = yards;
+      qLink.href = "quote-credit.html?yards=" + yards.toFixed(2) + "#quote";
+    };
+    var select = function (i, focus) {
+      tabs.forEach(function (t, k) {
+        t.setAttribute("aria-selected", String(k === i)); t.tabIndex = k === i ? 0 : -1;
+        panels[k].hidden = k !== i;
+      });
+      if (focus) tabs[i].focus();
+      compute();
+    };
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { select(i); });
+      t.addEventListener("keydown", function (ev) {
+        if (ev.key === "ArrowRight") select((i + 1) % tabs.length, true);
+        if (ev.key === "ArrowLeft") select((i - 1 + tabs.length) % tabs.length, true);
+      });
+    });
+    full.addEventListener("input", compute);
+    full.addEventListener("change", compute);
+    compute();
+  }
+
+  /* Quote form: carry yards over from the calculator */
+  var yardsField = document.getElementById("yards");
+  if (yardsField) {
+    var y = new URLSearchParams(location.search).get("yards");
+    if (y && !isNaN(parseFloat(y))) yardsField.value = y;
+  }
+
+  /* Preview forms: validate, then show the thank-you state (nothing is sent in the preview) */
+  document.querySelectorAll("[data-demo-form]").forEach(function (form) {
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      form.classList.add("sent");
+      var done = form.querySelector(".done");
+      done.setAttribute("tabindex", "-1"); done.focus();
+      if (window.gsap && !calm) gsap.fromTo(done, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "expo.out" });
+    });
+    var again = form.querySelector("[data-reset]");
+    if (again) again.addEventListener("click", function () { form.reset(); form.classList.remove("sent"); form.querySelector("input, select, textarea").focus(); });
+  });
+
   /* Town list, built from the map so the two never disagree */
   var townList = document.querySelector(".towns");
   var townGs = Array.prototype.slice.call(document.querySelectorAll(".map .town"));
@@ -162,6 +232,15 @@
     gsap.from(lines$, { yPercent: 135, duration: 1, stagger: 0.08, ease: "expo.out", delay: 0.1 });
     gsap.from(barBits, { opacity: 0, y: 18, duration: 0.8, stagger: 0.06, delay: 0.35 });
     maybeShowNote(1400);
+  }
+
+  /* Inner page header: title rises, photo settles */
+  if (document.querySelector(".page-hero")) {
+    gsap.from(".page-title .ln > span", { yPercent: 120, duration: 1.1, stagger: 0.09, ease: "expo.out", delay: 0.05 });
+    gsap.from(".page-lede", { opacity: 0, y: 16, duration: 0.9, delay: 0.35 });
+    gsap.fromTo(".page-hero picture img", { scale: 1.12 }, { scale: 1, duration: 1.8, ease: "expo.out" });
+    gsap.to(".page-hero picture img", { yPercent: 8, ease: "none", scrollTrigger: { trigger: ".page-hero", start: "top top", end: "bottom top", scrub: true } });
+    maybeShowNote(1600);
   }
 
   /* Hero photo drifts slower than the page */

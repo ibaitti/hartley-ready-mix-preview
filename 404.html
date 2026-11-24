@@ -20,7 +20,6 @@
 </script>
 <style>
   body.p404 .site-header { color: var(--ink); }
-  body.p404 .theme-toggle { background: color-mix(in oklch, var(--ink) 8%, transparent); }
   .curing { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: hidden; padding-block: 140px 120px; }
   .curing .wrap { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); align-items: center; }
   .big404 { grid-column: 1 / span 6; display: flex; align-items: center; gap: 0.04em; font-size: clamp(7rem, 3rem + 16vw, 19rem); font-weight: 850; font-stretch: 66%; line-height: .8; letter-spacing: -0.03em; }
@@ -68,10 +67,6 @@
       <a href="/careers-contact.html"><span class="swap"><span>Careers &amp; Contact</span><span aria-hidden="true">Careers &amp; Contact</span></span></a>
     </nav>
     <div class="hdr-tools">
-      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
-        <svg class="i-moon" aria-hidden="true"><use href="#moon"/></svg>
-        <svg class="i-sun" aria-hidden="true"><use href="#sun"/></svg>
-      </button>
       <a class="btn btn-accent hdr-call" href="tel:+13367883928">
         <svg aria-hidden="true"><use href="#phone"/></svg>
         <span>336-788-3928 <small>Winston-Salem</small></span>
@@ -96,6 +91,13 @@
   </div>
   <div class="tape" aria-hidden="true"><div><span>WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF.</span><span>WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF. WET CONCRETE. KEEP OFF.</span></div></div>
 </main>
+
+<div class="dock">
+  <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+    <svg class="i-moon" aria-hidden="true"><use href="#moon"/></svg>
+    <svg class="i-sun" aria-hidden="true"><use href="#sun"/></svg>
+  </button>
+</div>
 
 <nav class="callbar" aria-label="Call us">
   <a href="tel:+13367883928">Call Winston-Salem<small>336-788-3928</small></a>

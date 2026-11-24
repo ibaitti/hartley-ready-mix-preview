@@ -59,10 +59,6 @@
       <a href="careers-contact.html"><span class="swap"><span>Careers &amp; Contact</span><span aria-hidden="true">Careers &amp; Contact</span></span></a>
     </nav>
     <div class="hdr-tools">
-      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
-        <svg class="i-moon" aria-hidden="true"><use href="#moon"/></svg>
-        <svg class="i-sun" aria-hidden="true"><use href="#sun"/></svg>
-      </button>
       <a class="btn btn-accent hdr-call" href="tel:+13367883928">
         <svg aria-hidden="true"><use href="#phone"/></svg>
         <span>336-788-3928 <small>Winston-Salem</small></span>
@@ -300,7 +296,13 @@
 </nav>
 
 <!-- Viewer note for the preview only. Remove this block and .vnote styles before launch. -->
-<button class="vnote-tab" type="button" data-vnote-open hidden><b></b>Note for Howard</button>
+<div class="dock">
+  <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+    <svg class="i-moon" aria-hidden="true"><use href="#moon"/></svg>
+    <svg class="i-sun" aria-hidden="true"><use href="#sun"/></svg>
+  </button>
+  <button class="vnote-tab" type="button" data-vnote-open hidden><b></b>Note for Howard</button>
+</div>
 <div class="vnote" role="dialog" aria-modal="true" aria-labelledby="vnote-title" hidden data-vnote>
   <div class="vnote-card">
     <button class="x" type="button" aria-label="Close note" data-vnote-close>&times;</button>
