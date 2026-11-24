@@ -24,7 +24,10 @@
       var r = toggle.getBoundingClientRect();
       var x = r.left + r.width / 2, y = r.top + r.height / 2;
       var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-      document.startViewTransition(function () { setTheme(next); }).ready.then(function () {
+      var vt;
+      try { vt = document.startViewTransition({ update: function () { setTheme(next); }, types: ["theme"] }); }
+      catch (e) { vt = document.startViewTransition(function () { setTheme(next); }); }
+      vt.ready.then(function () {
         root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
           { duration: 750, easing: "cubic-bezier(0.65, 0, 0.35, 1)", pseudoElement: "::view-transition-new(root)" });
       });
@@ -195,7 +198,7 @@
     return;
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
   gsap.defaults({ ease: "power3.out" });
 
   /* 1. Intro: the logo alone, then it flies into the header while the page builds in */
@@ -250,26 +253,21 @@
   });
 
   /* 2. Statement: words rise, the drum turns with scroll */
-  var split = document.querySelector("[data-split]");
-  if (split) {
-    gsap.from(split, {
-      opacity: 0, y: 40, duration: 1.1,
-      scrollTrigger: { trigger: split, start: "top 85%", once: true }
-    });
-  }
   if (document.querySelector(".statement-subject")) gsap.fromTo(".statement-subject img",
     { rotate: -14, yPercent: 10, scale: 0.92 },
     { rotate: 6, yPercent: -8, scale: 1, ease: "none",
       scrollTrigger: { trigger: ".statement", start: "top bottom", end: "bottom top", scrub: 0.6 } });
 
-  /* 3. Image reveals: clip from the bottom edge up */
+  /* 3. Image reveals: clip from the bottom edge up, then the photo drifts gently inside its frame */
   gsap.utils.toArray(".reveal-img").forEach(function (fig) {
     var im = fig.querySelector("img");
     gsap.fromTo(fig, { clipPath: "inset(100% 0% 0% 0%)" }, {
       clipPath: "inset(0% 0% 0% 0%)", duration: 1.3, ease: "expo.inOut",
       scrollTrigger: { trigger: fig, start: "top 88%", once: true }
     });
-    if (im) gsap.fromTo(im, { scale: 1.25 }, { scale: 1, duration: 1.8, ease: "expo.out", scrollTrigger: { trigger: fig, start: "top 88%", once: true } });
+    if (!im) return;
+    gsap.fromTo(im, { scale: 1.2 }, { scale: 1, duration: 1.8, ease: "expo.out", scrollTrigger: { trigger: fig, start: "top 88%", once: true } });
+    gsap.fromTo(im, { yPercent: -5 }, { yPercent: 5, ease: "none", scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true } });
   });
 
   /* 4. Delivery area: pin, draw routes, count towns */
@@ -317,9 +315,35 @@
     });
   }
 
-  /* Section headings ease up as they arrive */
-  gsap.utils.toArray(".h2").forEach(function (h) {
-    gsap.from(h, { y: 36, opacity: 0, duration: 1, scrollTrigger: { trigger: h, start: "top 88%", once: true } });
+  /* Headings: each line rises from behind its own mask, once the font has loaded */
+  document.fonts.ready.then(function () {
+    gsap.utils.toArray(".h2, [data-split], .cta-band h2").forEach(function (h) {
+      SplitText.create(h, {
+        type: "lines", mask: "lines", autoSplit: true, linesClass: "sl",
+        onSplit: function (self) {
+          return gsap.from(self.lines, {
+            yPercent: 105, duration: 1.05, stagger: 0.08, ease: "expo.out",
+            scrollTrigger: { trigger: h, start: "top 88%", once: true }
+          });
+        }
+      });
+    });
+
+    /* Footer wordmark builds letter by letter */
+    var word = document.querySelector(".foot-word b");
+    if (word) {
+      SplitText.create(word, {
+        type: "chars", mask: "chars",
+        onSplit: function (self) {
+          return gsap.from(self.chars, {
+            yPercent: 100, duration: 1, stagger: 0.05, ease: "expo.out",
+            scrollTrigger: { trigger: ".foot-word", start: "top 92%", once: true }
+          });
+        }
+      });
+      gsap.from(".foot-word svg", { rotate: -90, scale: 0.6, opacity: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".foot-word", start: "top 92%", once: true } });
+    }
+    ScrollTrigger.refresh();
   });
 
   window.addEventListener("load", function () { ScrollTrigger.refresh(); });

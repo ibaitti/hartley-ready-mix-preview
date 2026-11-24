@@ -418,8 +418,23 @@ html.intro .hero-media img { transform: scale(1.16); }
 .vnote-card .go { margin-top: 22px; border: 0; cursor: pointer; padding: 12px 18px; border-radius: 8px; background: #23211c; color: #fffdf6; font: 600 15px/1 ui-sans-serif, system-ui, sans-serif; }
 @media (max-width: 640px) { .dock { bottom: calc(96px + env(safe-area-inset-bottom)); } }
 
-/* Theme switch: circular reveal from the toggle */
-::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+/* Page to page: a short cross-fade with a small lift. The logo stays put. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation: vt-out .32s cubic-bezier(0.65, 0, 0.35, 1) both; }
+  ::view-transition-new(root) { animation: vt-in .55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
+  @keyframes vt-in { from { opacity: 0; transform: translateY(18px); } }
+  .site-header .brand { view-transition-name: brand; }
+}
+/* Theme switch: circular reveal from the toggle, no page fade */
+html:active-view-transition-type(theme)::view-transition-old(root),
+html:active-view-transition-type(theme)::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html:active-view-transition-type(theme) .site-header .brand { view-transition-name: none; }
+
+/* Photos sit slightly taller than their frames so they can drift */
+.reveal-img img { height: 112%; margin-top: -6%; }
+.sl { padding-bottom: 0.06em; margin-bottom: -0.06em; }
 
 /* ===== Inner pages ===== */
 .page-hero {
@@ -533,3 +548,4 @@ html.intro .hero-media img { transform: scale(1.16); }
 fieldset.f { border: 0; padding: 0; margin: 0; min-width: 0; }
 fieldset.f legend { padding: 0; margin-bottom: 8px; }
 .loc-cards { align-items: start; }
+.site-footer { padding-bottom: 84px; }
