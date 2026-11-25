@@ -556,3 +556,66 @@ fieldset.f legend { padding: 0; margin-bottom: 8px; }
 @media (max-width: 1080px) {
   .split > .l.half, .split > .r.half, .acct { grid-column: 1 / -1; }
 }
+.vnote-card .tip { background: #f1ecdf; border-radius: 6px; padding: 12px 14px; font-size: 15.5px; line-height: 1.5; }
+
+/* ===== Phone pass ===== */
+.legal span:last-child { display: flex; flex-wrap: wrap; gap: 0 20px; }
+/* Menu button and full-screen menu (below 1080px, where the inline nav hides) */
+.menu-btn { display: none; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px 0 14px; border: 0; border-radius: var(--r-sm); cursor: pointer; background: oklch(1 0 0 / 0.14); color: inherit; font-weight: 600; font-size: 15px; }
+.menu-btn .bars { position: relative; width: 18px; height: 10px; }
+.menu-btn .bars::before, .menu-btn .bars::after { content: ""; position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: currentColor; transition: transform .35s var(--ease-out); }
+.menu-btn .bars::before { top: 0; } .menu-btn .bars::after { bottom: 0; }
+.menu-btn.is-close .bars::before { transform: translateY(4px) rotate(45deg); }
+.menu-btn.is-close .bars::after { transform: translateY(-4px) rotate(-45deg); }
+body.p404 .menu-btn { background: color-mix(in oklch, var(--ink) 9%, transparent); }
+.mnav { position: fixed; inset: 0; z-index: 88; display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain;
+  background: oklch(0.16 0.02 262); color: oklch(0.97 0.004 85); padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+.mnav[hidden] { display: none; }
+.mnav-top { display: flex; align-items: center; justify-content: space-between; padding-block: 22px; }
+.mnav-top .brand svg { width: 42px; color: var(--accent); }
+.mnav-links { display: grid; margin-top: clamp(16px, 5vh, 48px); }
+.mnav-links a { display: flex; align-items: baseline; gap: 14px; padding: 12px 0; border-bottom: 1px solid oklch(1 0 0 / 0.12); font-size: clamp(2.2rem, 9vw, 3.6rem); font-weight: 850; font-stretch: 72%; line-height: 1; letter-spacing: -0.01em; }
+.mnav-links a i { font-style: normal; font-size: 13px; font-weight: 600; font-stretch: 100%; opacity: .6; font-variant-numeric: tabular-nums; }
+.mnav-links a[aria-current] { color: var(--accent); }
+.mnav-foot { display: grid; gap: 10px; margin-top: auto; padding-top: 32px; }
+.mnav-foot .btn { justify-content: flex-start; }
+.mnav-foot .btn-line { box-shadow: inset 0 0 0 1.5px oklch(1 0 0 / 0.3); }
+.mnav-foot p { font-size: var(--step--1); opacity: .7; margin-top: 4px; }
+html.menu-open { overflow: hidden; }
+
+/* Bigger tap areas without changing the layout */
+.hero-bar a.tel, .foot-grid a, .legal a, .loc .tel, .loc-card .tel { display: inline-block; padding-block: 12px; margin-block: -12px; }
+.foot-grid .col-wide { grid-column: span 2; }
+
+@media (max-width: 1080px) {
+  .menu-btn { display: inline-flex; }
+  .hdr-tools { gap: 8px; }
+  /* the delivery area stacks: copy, then map */
+  .area-copy, .map { grid-column: 1 / -1; margin-right: 0; }
+  .area .count b { font-size: clamp(4.5rem, 3rem + 10vw, 7rem); }
+}
+@media (max-width: 640px) {
+  /* map: dots and the two yards only, the town list below carries the names */
+  .map .town text { display: none; }
+  .map .town circle { r: 11px; }
+  .map .yard circle { r: 22px; }
+  .map .yard text { font-size: 44px; }
+  .map { margin-top: 8px; }
+  .map-note { position: static; margin-top: 8px; }
+  .count span { max-width: none; }
+  .foot-grid .col-wide { grid-column: 1 / -1; }
+  .legal { flex-direction: column; }
+  .legal span:last-child { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .legal span:last-child a { padding-block: 12px; margin-block: 0; }
+  .site-footer { padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
+  .dock { right: 12px; gap: 6px; }
+  .theme-toggle, .vnote-tab { height: 42px; }
+  .theme-toggle { width: 42px; }
+  .hero-body { padding-top: 120px; }
+  .page-hero .wrap { padding-top: 120px; }
+}
+@media (max-width: 640px) {
+  .map .yard[data-x="358.7"] text { text-anchor: end; transform: translateX(-44px); }
+  .hero-bar { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+  .hero-bar dl:nth-of-type(3) { display: none; }
+}

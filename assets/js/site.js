@@ -34,6 +34,36 @@
     });
   }
 
+  /* Phone and tablet menu */
+  var mOpen = document.querySelector("[data-mnav-open]");
+  var mNav = document.querySelector("[data-mnav]");
+  if (mOpen && mNav) {
+    var behind = ["main", ".site-footer", ".callbar", ".dock", ".site-header"];
+    var setInert = function (on) { behind.forEach(function (s) { var el = document.querySelector(s); if (el) el.inert = on; }); };
+    var openMenu = function () {
+      mNav.hidden = false; mOpen.setAttribute("aria-expanded", "true");
+      root.classList.add("menu-open"); setInert(true);
+      mNav.querySelector("[data-mnav-close]").focus({ preventScroll: true });
+      if (window.gsap && !calm) {
+        gsap.fromTo(mNav, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "expo.inOut" });
+        gsap.fromTo(mNav.querySelectorAll(".mnav-links a, .mnav-foot > *"), { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.05, ease: "expo.out", delay: 0.25 });
+      }
+    };
+    var closeMenu = function () {
+      var done = function () { mNav.hidden = true; if (window.gsap) gsap.set(mNav, { clearProps: "clipPath" }); };
+      mOpen.setAttribute("aria-expanded", "false");
+      root.classList.remove("menu-open"); setInert(false);
+      mOpen.focus({ preventScroll: true });
+      if (window.gsap && !calm) gsap.to(mNav, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.5, ease: "expo.inOut", onComplete: done });
+      else done();
+    };
+    mOpen.addEventListener("click", openMenu);
+    mNav.querySelector("[data-mnav-close]").addEventListener("click", closeMenu);
+    mNav.querySelectorAll('a[aria-current="page"]').forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); closeMenu(); }); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !mNav.hidden) closeMenu(); });
+    window.matchMedia("(min-width: 1081px)").addEventListener("change", function (m) { if (m.matches && !mNav.hidden) closeMenu(); });
+  }
+
   /* Viewer-only note for the preview. Remove before launch. */
   var note = document.querySelector("[data-vnote]");
   var noteTab = document.querySelector("[data-vnote-open]");

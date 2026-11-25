@@ -11,7 +11,7 @@
 <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="assets/img/slab-1200.avif" imagesrcset="assets/img/slab-1200.avif 1200w, assets/img/slab-2000.avif 2000w" imagesizes="100vw" type="image/avif" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css?v=20261125d">
 <script>
   (function () {
     var d = document.documentElement;
@@ -50,9 +50,23 @@
         <svg aria-hidden="true"><use href="#phone"/></svg>
         <span>336-788-3928 <small>Winston-Salem</small></span>
       </a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav" data-mnav-open><span class="bars" aria-hidden="true"></span>Menu</button>
     </div>
   </div>
 </header>
+
+<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu" hidden data-mnav>
+  <div class="wrap mnav-top">
+    <a class="brand" href="index.html" aria-label="Hartley Ready Mix Concrete, home"><svg viewBox="0 0 787 723" aria-hidden="true"><use href="#mark"/></svg><span class="brand-word"><b>HARTLEY</b><small>READY MIX CONCRETE</small></span></a>
+    <button class="menu-btn is-close" type="button" data-mnav-close><span class="bars" aria-hidden="true"></span>Close</button>
+  </div>
+  <nav class="wrap mnav-links" aria-label="Pages"><a href="index.html"><i>01</i>Home</a><a href="mixes-delivery.html"><i>02</i>Mixes &amp; Delivery</a><a href="calculator.html" aria-current="page"><i>03</i>Calculator</a><a href="quote-credit.html"><i>04</i>Quote &amp; Credit</a><a href="careers-contact.html"><i>05</i>Careers &amp; Contact</a></nav>
+  <div class="wrap mnav-foot">
+    <a class="btn btn-accent" href="tel:+13367883928"><svg aria-hidden="true"><use href="#phone"/></svg>Winston-Salem 336-788-3928</a>
+    <a class="btn btn-line" href="tel:+13362945995"><svg aria-hidden="true"><use href="#phone"/></svg>Greensboro 336-294-5995</a>
+    <p>Mon to Fri, 7 am to 5 pm</p>
+  </div>
+</div>
 
 <main id="main">
   <section class="page-hero" aria-labelledby="pt">
@@ -106,10 +120,10 @@
       <div class="col"><p class="tag">By work and integrity, service is our strength.</p></div>
       <div class="col"><h3>Winston-Salem</h3><p>3510 Rothrock St.<br>Winston-Salem, NC 27107</p><a href="tel:+13367883928">336-788-3928</a></div>
       <div class="col"><h3>Greensboro</h3><p>1040 Boulder Road<br>Greensboro, NC 27409</p><a href="tel:+13362945995">336-294-5995</a></div>
-      <div class="col" style="grid-column: span 2"><h3>Office and hours</h3><p>PO Box 1719, Welcome, NC 27374</p><a href="tel:+13367883522">336-788-3522</a><p>Mon to Fri, 7 am to 5 pm</p></div>
+      <div class="col col-wide"><h3>Office and hours</h3><p>PO Box 1719, Welcome, NC 27374</p><a href="tel:+13367883522">336-788-3522</a><p>Mon to Fri, 7 am to 5 pm</p></div>
     </div>
     <div class="foot-word" aria-hidden="true"><svg viewBox="0 0 787 723"><use href="#mark"/></svg><b>HARTLEY</b></div>
-    <div class="legal"><span>&copy; 2026 Hartley Ready Mix Concrete. Family owned and operated since 1954.</span><span><a href="mixes-delivery.html">Mixes &amp; Delivery</a> &middot; <a href="calculator.html">Calculator</a> &middot; <a href="quote-credit.html">Quote &amp; Credit</a> &middot; <a href="careers-contact.html">Careers &amp; Contact</a></span></div>
+    <div class="legal"><span>&copy; 2026 Hartley Ready Mix Concrete. Family owned and operated since 1954.</span><span><a href="mixes-delivery.html">Mixes &amp; Delivery</a> <a href="calculator.html">Calculator</a> <a href="quote-credit.html">Quote &amp; Credit</a> <a href="careers-contact.html">Careers &amp; Contact</a></span></div>
   </div>
 </footer>
 
@@ -131,6 +145,7 @@
     <button class="x" type="button" aria-label="Close note" data-vnote-close>&times;</button>
     <p class="label" id="vnote-title">Not part of the website. A personal note for Howard, from Ayoub at Baitti Studio.</p>
     <p>Hi Howard,</p>
+    <p class="tip">One tip first: this looks its best on a computer. If you are reading this on your phone, everything works there too, but please open it on a desktop or laptop when you can, so you see it the way it was designed.</p>
     <p>This is a working preview of a new website for Hartley Ready Mix, built over the last few weeks. Nothing here is final. The words, colours, layout and every photo can change. The forms are not connected yet, so nothing you type is sent.</p>
     <p>A personal word. There are plenty of agencies out there, and I believe I am the right fit for this. I would put more into Hartley than any of them, because I am building my studio from the ground up and this work matters to me. It is not just a website. Every project like this one moves me closer to retiring my dad, and I am not slowing down. If we work together, we both win.</p>
     <p>And if the answer is no, that is completely fine. I hope this note does not weigh on your decision either way. Thank you for taking a look.</p>
@@ -142,7 +157,7 @@
 <script src="assets/js/vendor/gsap.min.js" defer></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
 <script src="assets/js/vendor/SplitText.min.js" defer></script>
-<script src="assets/js/site.js" defer></script>
-<script src="assets/js/watch.js" defer></script>
+<script src="assets/js/site.js?v=20261125d" defer></script>
+<script src="assets/js/watch.js?v=20261125d" defer></script>
 </body>
 </html>
