@@ -11,16 +11,42 @@
   var ls, ss;
   try { ls = window.localStorage; ss = window.sessionStorage; } catch (e) { return; }
 
-  /* Mark your own devices: open any page once with ?me. Use ?me=0 to undo. */
+  /* Only Ayoub sees this: a short on-screen confirmation */
+  function toast(text) {
+    var show = function () {
+      var t = document.createElement("div");
+      t.textContent = text; t.setAttribute("role", "status");
+      t.style.cssText = "position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:999;max-width:calc(100% - 32px);padding:12px 16px;border-radius:8px;background:#111;color:#fff;font:600 15px/1.35 system-ui,sans-serif;text-align:center";
+      document.body.appendChild(t);
+      setTimeout(function () { t.remove(); }, 5000);
+    };
+    if (document.body) show(); else document.addEventListener("DOMContentLoaded", show);
+  }
+
+  /* Mark your own devices: open any page once with ?me. Use ?me=0 to undo.
+     ?ping sends one test alert, even from a muted device. */
+  var ping = false;
   try {
     var q = new URLSearchParams(location.search);
-    if (q.has("me")) {
-      if (q.get("me") === "0") ls.removeItem("hrm-me"); else ls.setItem("hrm-me", "1");
-      q.delete("me");
+    if (q.has("me") || q.has("ping")) {
+      if (q.has("me")) {
+        if (q.get("me") === "0") { ls.removeItem("hrm-me"); toast("Alerts are back on for this device."); }
+        else { ls.setItem("hrm-me", "1"); toast("This device is muted. Your own visits will not send alerts."); }
+      }
+      ping = q.has("ping");
+      q.delete("me"); q.delete("ping");
       var rest = q.toString();
       history.replaceState(null, "", location.pathname + (rest ? "?" + rest : "") + location.hash);
     }
   } catch (e) {}
+  if (ping) {
+    try {
+      fetch("https://ntfy.sh/", { method: "POST", keepalive: true, headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ topic: "hartley-371a0c8ad91c788d6071", title: "Test alert from your device", message: "Alerts are working. Howard's visits will show up like this.", priority: 4, tags: ["white_check_mark"] }) })
+        .then(function (r) { toast(r.ok ? "Test alert sent. Check the ntfy app." : "Test alert failed (" + r.status + ")."); })
+        .catch(function () { toast("Test alert could not be sent. Check the connection."); });
+    } catch (e) {}
+  }
   if (ls.getItem("hrm-me")) return;
 
   /* Ignore bots, link previews, test runners and local development */
