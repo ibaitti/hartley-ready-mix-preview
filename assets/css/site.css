@@ -590,6 +590,12 @@ html.menu-open { overflow: hidden; }
 @media (max-width: 1080px) {
   .menu-btn { display: inline-flex; }
   .hdr-tools { gap: 8px; }
+  /* the header follows the reader once the hero is gone */
+  .site-header { position: fixed; transition: transform .45s var(--ease-out); }
+  html.hdr-float .site-header { background: oklch(0.16 0.02 262); color: oklch(0.97 0.004 85); }
+  html.hdr-float .site-header .wrap { padding-block: 10px; }
+  html.hdr-float body.p404 .menu-btn { background: oklch(1 0 0 / 0.14); }
+  html.hdr-float.hdr-hide .site-header { transform: translateY(-100%); }
   /* the delivery area stacks: copy, then map */
   .area-copy, .map { grid-column: 1 / -1; margin-right: 0; }
   .area .count b { font-size: clamp(4.5rem, 3rem + 10vw, 7rem); }

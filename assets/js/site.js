@@ -62,6 +62,21 @@
     mNav.querySelectorAll('a[aria-current="page"]').forEach(function (a) { a.addEventListener("click", function (e) { e.preventDefault(); closeMenu(); }); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !mNav.hidden) closeMenu(); });
     window.matchMedia("(min-width: 1081px)").addEventListener("change", function (m) { if (m.matches && !mNav.hidden) closeMenu(); });
+
+    /* Header follows on phones and tablets: hides while scrolling down, returns on scroll up */
+    var lastY = window.scrollY, hdrTick = false;
+    var onHdrScroll = function () {
+      hdrTick = false;
+      if (root.classList.contains("menu-open")) return;
+      var y = Math.max(0, window.scrollY);
+      root.classList.toggle("hdr-float", y > 90);
+      if (y <= 90 || y < lastY - 6) root.classList.remove("hdr-hide");
+      else if (y > lastY + 6) root.classList.add("hdr-hide");
+      if (Math.abs(y - lastY) > 6) lastY = y;
+    };
+    window.addEventListener("scroll", function () { if (!hdrTick) { hdrTick = true; requestAnimationFrame(onHdrScroll); } }, { passive: true });
+    onHdrScroll();
+    mOpen.addEventListener("focus", function () { root.classList.remove("hdr-hide"); });
   }
 
   /* Viewer-only note for the preview. Remove before launch. */
